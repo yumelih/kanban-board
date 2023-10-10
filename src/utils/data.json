@@ -1,0 +1,32 @@
+{
+  "boards": [
+    {
+      "id": "1",
+      "name": "Platform launch",
+      "isSelected": false,
+      "isArchived": false,
+      "todos": [
+        {
+          "taskId": "1",
+          "taskTitle": "Build UI",
+          "status": "Done",
+          "subtasks": ["Be a winner", "Just win"]
+        }
+      ]
+    },
+    {
+      "id": "1",
+      "name": "Platform launch",
+      "isSelected": false,
+      "isArchived": false,
+      "todos": [
+        {
+          "taskId": "1",
+          "taskTitle": "Build UI",
+          "status": "Done",
+          "subtasks": ["Be a winner", "Just win"]
+        }
+      ]
+    }
+  ]
+}

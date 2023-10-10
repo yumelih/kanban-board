@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .list {
+    @apply flex cursor-pointer select-none items-center justify-start rounded-r-full py-2.5 pl-7 transition-all duration-300;
+  }
+  .input {
+    @apply rounded-md border-[2px] border-gray-500/30 bg-transparent px-3 py-2;
+  }
+  /* .select {
+    @apply;
+  } */
+  .label {
+    @apply text-sm font-semibold;
+  }
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+}
