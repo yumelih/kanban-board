@@ -1,14 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-function Modal({ addTask, onAddTask, children }) {
+function Modal({ onOpen, children }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  if (addTask) return;
+  function handleOpen() {
+    setIsOpen((prev) => !prev);
+  }
+
+  useEffect(
+    function () {
+      onOpen((prev) => !prev);
+    },
+    [isOpen, onOpen],
+  );
+
+  if (isOpen) return;
 
   return (
     <div
       className="fixed z-50 flex h-screen w-screen items-center justify-center bg-gray-800/20 backdrop-brightness-50"
-      onClick={() => onAddTask(false)}
+      onClick={handleOpen}
     >
       <div
         className="w-[30rem] space-y-4 bg-secondary p-8 text-primaryWhite"

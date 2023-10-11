@@ -66,7 +66,7 @@ const initialState = {
         {
           taskId: "2",
           taskTitle: "War",
-          currentColumn: "Done",
+          currentColumn: "Todo",
           subtasks: [
             { subTaskId: 1, subTaskTitle: "Be a winner", finished: true },
             { subTaskId: 2, subTaskTitle: "Be a loser", finished: false },

@@ -9,15 +9,15 @@ import { useState } from "react";
 //secondary background color: bg-slate-800
 
 function AppLayout() {
-  const [addTask, setAddTask] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
       {/* <TaskDetails /> */}
-      {addTask && <AddTaskModal onAddTask={setAddTask} addTask={addTask} />}
+      {isOpen && <AddTaskModal onAddTask={setIsOpen} />}
       <div className=" relative grid h-full w-full grid-cols-[minmax(18rem,max-content)_1fr] grid-rows-[minmax(5rem,max-content)_1fr] gap-x-[0.5px]  bg-primary ">
         <Sidebar />
-        <Navbar onAddTask={setAddTask} />
+        <Navbar onAddTask={setIsOpen} />
         <Board />
       </div>
     </>
