@@ -5,9 +5,9 @@ import Modal from "../../ui/Modal";
 import Select from "../../ui/Select";
 import Subtask from "../../ui/Subtask";
 
-function AddTaskModal() {
+function AddTaskModal({ onAddTask, addTask }) {
   return (
-    <Modal>
+    <Modal onAddTask={onAddTask} addTask={addTask}>
       <h1 className="mb-4 text-xl font-semibold">Add New Task</h1>
       <form className="flex flex-col gap-4">
         <Input id="title">Title</Input>

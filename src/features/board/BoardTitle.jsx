@@ -9,7 +9,6 @@ function BoardTitle({ title, id, isActive, onActive }) {
   return (
     <li
       className={id === isActive ? activeStyle : base + hoverStyle}
-      key={id}
       onClick={() => onActive(id)}
     >
       <img className="mr-2 w-5" src={tableWhite} alt="table" />

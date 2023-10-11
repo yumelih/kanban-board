@@ -1,11 +1,12 @@
 import { useSelector } from "react-redux";
 import Heading from "../../ui/Heading";
 import Task from "./Task";
-import { getAllTasks, getBoard } from "./boardSlice";
+import { getBoard } from "./boardSlice";
 
 function Column({ index }) {
-  const tasks = useSelector(getAllTasks);
+  // const tasks = useSelector(getAllTasks);
   const board = useSelector(getBoard);
+  const tasks = board.todos;
   const colors = [
     "bg-red-300",
     "bg-blue-300",

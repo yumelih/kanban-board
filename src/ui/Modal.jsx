@@ -1,14 +1,14 @@
 import { useState } from "react";
 
-function Modal({ onCloseModal, children }) {
-  const [closeModal, setCloseModal] = useState(false);
+function Modal({ addTask, onAddTask, children }) {
+  const [isOpen, setIsOpen] = useState(false);
 
-  if (closeModal) return;
+  if (addTask) return;
 
   return (
     <div
       className="fixed z-50 flex h-screen w-screen items-center justify-center bg-gray-800/20 backdrop-brightness-50"
-      onClick={() => setCloseModal(true)}
+      onClick={() => onAddTask(false)}
     >
       <div
         className="w-[30rem] space-y-4 bg-secondary p-8 text-primaryWhite"

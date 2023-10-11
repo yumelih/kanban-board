@@ -3,7 +3,7 @@ import NewColumn from "./NewColumn";
 
 function Board() {
   return (
-    <div className="mx-12 my-8 grid auto-cols-max grid-flow-col content-start gap-6">
+    <div className="grid auto-cols-max grid-flow-col content-start gap-6 overflow-auto px-12 py-8">
       <Column index={0} />
       <Column index={1} />
       <Column index={2} />
