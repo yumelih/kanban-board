@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
+import { useRef } from "react";
+import { useDispatch } from "react-redux";
+import {
+  openAddTaskModal,
+  openTaskDetailModal,
+} from "../features/board/boardSlice";
 
-function Modal({ onOpen, children }) {
-  const [isOpen, setIsOpen] = useState(false);
+function Modal({ type, children }) {
+  const isOpen = useRef(false);
+  const dispatch = useDispatch();
 
   function handleOpen() {
-    setIsOpen((prev) => !prev);
+    isOpen.current = !isOpen.current;
+
+    if (type === "addTask") dispatch(openAddTaskModal(!isOpen.current));
+    if (type === "taskDetail") dispatch(openTaskDetailModal(null));
   }
-
-  useEffect(
-    function () {
-      onOpen((prev) => !prev);
-    },
-    [isOpen, onOpen],
-  );
-
-  if (isOpen) return;
 
   return (
     <div
@@ -22,7 +22,7 @@ function Modal({ onOpen, children }) {
       onClick={handleOpen}
     >
       <div
-        className="w-[30rem] space-y-4 bg-secondary p-8 text-primaryWhite"
+        className=" max-h-[50rem] w-[30rem] space-y-4 overflow-auto bg-secondary p-8 text-primaryWhite"
         onClick={(e) => e.stopPropagation()}
       >
         {children}

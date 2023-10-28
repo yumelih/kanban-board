@@ -3,7 +3,7 @@ import Heading from "../../ui/Heading";
 import Task from "./Task";
 import { getBoard } from "./boardSlice";
 
-function Column({ index }) {
+function Column({ index, onShowDetails }) {
   // const tasks = useSelector(getAllTasks);
   const board = useSelector(getBoard);
   const tasks = board.todos;
@@ -34,9 +34,11 @@ function Column({ index }) {
         (task) =>
           board.columnNames[index] === task.currentColumn && (
             <Task
-              key={task.id}
+              key={task.taskId}
+              id={task.taskId}
               title={task.taskTitle}
               subtasks={task.subtasks}
+              onShowDetails={onShowDetails}
             />
           ),
       )}
