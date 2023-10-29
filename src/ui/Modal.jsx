@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import {
+  openAddColumnModal,
   openAddTaskModal,
   openTaskDetailModal,
 } from "../features/board/boardSlice";
@@ -14,6 +15,7 @@ function Modal({ type, children }) {
 
     if (type === "addTask") dispatch(openAddTaskModal(!isOpen.current));
     if (type === "taskDetail") dispatch(openTaskDetailModal(null));
+    if (type === "addColumm") dispatch(openAddColumnModal(!isOpen.current));
   }
 
   return (

@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isAddTaskModalOpen: { open: false, func: "openAddTaskModal" },
   isDetailTaskOpen: { open: null, func: "openAddTaskDetailModal" },
+  isAddNewColumnOpen: false,
   boards: [
     {
       id: "1",
@@ -17,8 +18,8 @@ const initialState = {
           taskDescription: "Something Good",
           currentColumn: "Todo",
           subtasks: [
-            { subTaskId: 1, subTaskTitle: "Be a winner", finished: true },
-            { subTaskId: 2, subTaskTitle: "Be a loser", finished: true },
+            { subtaskId: 1, subtaskTitle: "Be a winner", finished: true },
+            { subtaskId: 2, subtaskTitle: "Be a loser", finished: true },
           ],
         },
         {
@@ -27,8 +28,8 @@ const initialState = {
           taskDescription: "Something Good",
           currentColumn: "Done",
           subtasks: [
-            { subTaskId: 1, subTaskTitle: "Be a winner", finished: true },
-            { subTaskId: 2, subTaskTitle: "Be a loser", finished: false },
+            { subtaskId: 1, subtaskTitle: "Be a crybaby", finished: true },
+            { subtaskId: 2, subtaskTitle: "Be a loser", finished: false },
           ],
         },
         {
@@ -37,8 +38,8 @@ const initialState = {
           taskDescription: "Something Good",
           currentColumn: "Done",
           subtasks: [
-            { subTaskId: 1, subTaskTitle: "Be a winner", finished: true },
-            { subTaskId: 2, subTaskTitle: "Be a loser", finished: false },
+            { subtaskId: 1, subtaskTitle: "Be a winner", finished: true },
+            { subtaskId: 2, subtaskTitle: "Be a man", finished: false },
           ],
         },
         {
@@ -47,8 +48,8 @@ const initialState = {
           taskDescription: "Something Good",
           currentColumn: "Done",
           subtasks: [
-            { subTaskId: 1, subTaskTitle: "Be a winner", finished: true },
-            { subTaskId: 2, subTaskTitle: "Be a loser", finished: false },
+            { subtaskId: 1, subtaskTitle: "Be a winner", finished: true },
+            { subtaskId: 2, subtaskTitle: "Be a loser", finished: false },
           ],
         },
       ],
@@ -66,8 +67,8 @@ const initialState = {
           taskDescription: "Something Good",
           currentColumn: "Todo",
           subtasks: [
-            { subTaskId: 1, subTaskTitle: "Be a winner", finished: true },
-            { subTaskId: 2, subTaskTitle: "Be a loser", finished: true },
+            { subtaskId: 1, subTaskTitle: "Be a winner", finished: true },
+            { subtaskId: 2, subTaskTitle: "Be a loser", finished: true },
           ],
         },
         {
@@ -76,8 +77,8 @@ const initialState = {
           taskDescription: "Something Good",
           currentColumn: "Todo",
           subtasks: [
-            { subTaskId: 1, subTaskTitle: "Be a winner", finished: true },
-            { subTaskId: 2, subTaskTitle: "Be a loser", finished: false },
+            { subtaskId: 1, subTaskTitle: "Be a winner", finished: true },
+            { subtaskId: 2, subTaskTitle: "Be a loser", finished: false },
           ],
         },
         {
@@ -86,8 +87,8 @@ const initialState = {
           taskDescription: "Something Good",
           currentColumn: "Done",
           subtasks: [
-            { subTaskId: 1, subTaskTitle: "Be a winner", finished: true },
-            { subTaskId: 2, subTaskTitle: "Be a loser", finished: false },
+            { subtaskId: 1, subtaskTitle: "Be a winner", finished: true },
+            { subtaskId: 2, subtaskTitle: "Be a loser", finished: false },
           ],
         },
         {
@@ -113,7 +114,8 @@ const boardSlice = createSlice({
       state.boards.push(action.payload);
     },
     addColumn(state, action) {
-      const board = state.boards.find((item) => item.id === action.payload.id);
+      const board = state.boards.find((item) => item.isActive);
+      board.columnNames.push(action.payload);
     },
     addTask(state, action) {
       const board = state.boards.find((item) => item.isActive);
@@ -123,6 +125,26 @@ const boardSlice = createSlice({
       const board = state.boards.find((b) => b.id === action.payload);
       state.boards.forEach((board) => (board.isActive = false));
       board.isActive = true;
+    },
+    updateSubtask: {
+      prepare(taskId, subtaskId, isChecked) {
+        return {
+          payload: {
+            taskId,
+            subtaskId,
+            isChecked,
+          },
+        };
+      },
+      reducer(state, action) {
+        const subtask = state.boards
+          .find((board) => board.isActive)
+          .todos.find((task) => task.taskId === action.payload.taskId)
+          .subtasks.find(
+            (subtask) => subtask.subtaskId === action.payload.subtaskId,
+          );
+        subtask.finished = action.payload.isChecked;
+      },
     },
 
     openAddTaskModal: {
@@ -152,6 +174,9 @@ const boardSlice = createSlice({
         state.isDetailTaskOpen.open = action.payload.isOpen;
       },
     },
+    openAddColumnModal(state, action) {
+      state.isAddNewColumnOpen = action.payload;
+    },
   },
 });
 
@@ -165,6 +190,7 @@ export const getTaskDetail = (state) =>
   );
 export const getAddTaskOpen = (state) => state.boards.isAddTaskModalOpen;
 export const getDetailTaskOpen = (state) => state.boards.isDetailTaskOpen;
+export const getAddColumnOpen = (state) => state.boards.isAddNewColumnOpen;
 
 export const {
   addBoard,
@@ -172,5 +198,8 @@ export const {
   addTask,
   openAddTaskModal,
   openTaskDetailModal,
+  updateSubtask,
+  addColumn,
+  openAddColumnModal,
 } = boardSlice.actions;
 export default boardSlice.reducer;

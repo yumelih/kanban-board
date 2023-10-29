@@ -4,11 +4,10 @@ function Input({
   type = "input",
   typeOfInput = "text",
   register,
-  validationSchema,
+  validationSchema = { required: "This field is required" },
   errors,
+  placeholder = "e.g. Take coffee break",
 }) {
-  console.log(errors);
-
   return (
     <div className="flex flex-col gap-1">
       <label htmlFor={id} className="label">
@@ -20,7 +19,7 @@ function Input({
             type={typeOfInput}
             id={id}
             name={id}
-            placeholder="e.g. Take coffee break"
+            placeholder={placeholder}
             className="input"
             {...register(id, validationSchema)}
           />

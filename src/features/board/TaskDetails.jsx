@@ -1,12 +1,13 @@
 import { useSelector } from "react-redux";
 import Checkbox from "../../ui/Checkbox";
-import Input from "../../ui/Input";
+
 import Modal from "../../ui/Modal";
-import Select from "../../ui/Select";
-import { getTaskDetail } from "./boardSlice";
+
+import { getTaskDetail, updateSubtask } from "./boardSlice";
 
 function TaskDetails() {
   const task = useSelector(getTaskDetail);
+
   const numberOfSubtasks = task.subtasks.length;
   const subTasksCompleted = task?.subtasks.reduce(
     (acc, cur) => acc + Number(cur.finished),
@@ -22,9 +23,16 @@ function TaskDetails() {
         <p className="label">
           Subtasks({subTasksCompleted} of {numberOfSubtasks})
         </p>
-        <Checkbox />
-        <Checkbox />
-        <Checkbox />
+        {task.subtasks.map((subtask) => (
+          <Checkbox
+            key={subtask.subtaskId}
+            label={subtask.subtaskTitle}
+            checked={subtask.finished}
+            updateFunction={(isChecked) =>
+              updateSubtask(task.taskId, subtask.subtaskId, isChecked)
+            }
+          />
+        ))}
       </div>
       {/* <Select label="Status" /> */}
     </Modal>
