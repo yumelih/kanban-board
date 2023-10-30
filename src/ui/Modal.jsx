@@ -7,15 +7,17 @@ import {
 } from "../features/board/boardSlice";
 
 function Modal({ type, children }) {
-  const isOpen = useRef(false);
+  const isOpen = useRef(true);
   const dispatch = useDispatch();
 
   function handleOpen() {
     isOpen.current = !isOpen.current;
 
-    if (type === "addTask") dispatch(openAddTaskModal(!isOpen.current));
+    if (type === "addTask") dispatch(openAddTaskModal(isOpen.current));
+
     if (type === "taskDetail") dispatch(openTaskDetailModal(null));
-    if (type === "addColumm") dispatch(openAddColumnModal(!isOpen.current));
+
+    if (type === "addColumn") dispatch(openAddColumnModal(isOpen.current));
   }
 
   return (

@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import randomIdGenerator from "../../utils/randomIdGenerator";
 
 const initialState = {
   isAddTaskModalOpen: { open: false, func: "openAddTaskModal" },
@@ -111,7 +112,25 @@ const boardSlice = createSlice({
   initialState,
   reducers: {
     addBoard(state, action) {
-      state.boards.push(action.payload);
+      state.boards.push({
+        id: randomIdGenerator(),
+        name: action.payload,
+        isActive: true,
+        isArchived: false,
+        columnNames: ["Todo", "Doing", "Done"],
+        todos: [
+          {
+            taskId: "1",
+            taskTitle: "Build UI",
+            taskDescription: "Something Good",
+            currentColumn: "Todo",
+            subtasks: [
+              { subtaskId: 1, subtaskTitle: "Be a winner", finished: true },
+              { subtaskId: 2, subtaskTitle: "Be a loser", finished: true },
+            ],
+          },
+        ],
+      });
     },
     addColumn(state, action) {
       const board = state.boards.find((item) => item.isActive);
