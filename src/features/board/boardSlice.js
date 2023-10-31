@@ -132,6 +132,12 @@ const boardSlice = createSlice({
         ],
       });
     },
+    deleteBoard(state, action) {
+      state.boards = state.boards.filter(
+        (board) => board.id !== action.payload,
+      );
+      boardSlice.caseReducers.switchBoard();
+    },
     addColumn(state, action) {
       const board = state.boards.find((item) => item.isActive);
       board.columnNames.push(action.payload);
@@ -220,5 +226,6 @@ export const {
   updateSubtask,
   addColumn,
   openAddColumnModal,
+  deleteBoard,
 } = boardSlice.actions;
 export default boardSlice.reducer;
