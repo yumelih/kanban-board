@@ -5,6 +5,7 @@ const initialState = {
   isAddTaskModalOpen: { open: false, func: "openAddTaskModal" },
   isDetailTaskOpen: { open: null, func: "openAddTaskDetailModal" },
   isAddNewColumnOpen: false,
+  isEditBoard: null,
   boards: [
     {
       id: "1",
@@ -146,7 +147,12 @@ const boardSlice = createSlice({
       }
     },
 
-    editBoard(state, action) {},
+    editBoard(state, action) {
+      const board = state.boards.find(
+        (board) => board.id === state.isEditBoard,
+      );
+      board.name = action.payload;
+    },
     addColumn(state, action) {
       const board = state.boards.find((item) => item.isActive);
       board.columnNames.push(action.payload);
@@ -211,6 +217,9 @@ const boardSlice = createSlice({
     openAddColumnModal(state, action) {
       state.isAddNewColumnOpen = action.payload;
     },
+    openEditBoardModal(state, action) {
+      state.isEditBoard = action.payload;
+    },
   },
 });
 
@@ -236,5 +245,7 @@ export const {
   addColumn,
   openAddColumnModal,
   deleteBoard,
+  editBoard,
+  openEditBoardModal,
 } = boardSlice.actions;
 export default boardSlice.reducer;

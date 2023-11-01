@@ -11,6 +11,7 @@ import {
   getDetailTaskOpen,
 } from "../features/board/boardSlice";
 import AddColumn from "../features/board/AddColumn";
+import EditBoardModal from "../features/board/EditBoardModal";
 
 //main background color: bg-slate-900
 //secondary background color: bg-slate-800
@@ -19,12 +20,18 @@ function AppLayout() {
   const isAddTaskOpen = useSelector(getAddTaskOpen);
   const isDetailTaskOpen = useSelector(getDetailTaskOpen);
   const isAddColumnOpen = useSelector(getAddColumnOpen);
+  const isEditBoard = useSelector((state) => state.boards.isEditBoard);
+  const boardName = useSelector(
+    (state) =>
+      state.boards.boards.find((board) => board.id === isEditBoard)?.name,
+  );
 
   return (
     <>
       {isDetailTaskOpen.open && <TaskDetails />}
       {isAddTaskOpen.open && <AddTaskModal />}
       {isAddColumnOpen && <AddColumn />}
+      {isEditBoard && <EditBoardModal boardName={boardName} />}
       <div className=" relative grid h-full w-full grid-cols-[minmax(18rem,max-content)_1fr] grid-rows-[minmax(5rem,max-content)_1fr] gap-x-[0.5px]  bg-primary ">
         <Sidebar />
         <Navbar />

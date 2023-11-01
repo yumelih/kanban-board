@@ -7,6 +7,7 @@ function Input({
   validationSchema = { required: "This field is required" },
   errors,
   placeholder = "e.g. Take coffee break",
+  defaultValue = "",
 }) {
   return (
     <div className="flex flex-col gap-1">
@@ -21,6 +22,7 @@ function Input({
             name={id}
             placeholder={placeholder}
             className="input"
+            defaultValue={defaultValue}
             {...register(id, validationSchema)}
           />
           {errors?.[id] && (
