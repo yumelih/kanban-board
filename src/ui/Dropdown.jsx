@@ -9,8 +9,10 @@ function Dropdown({ children }) {
     setOpenName((prev) => (prev ? null : openName));
   }
 
+  const close = () => setOpenName(null);
+
   return (
-    <DropdownContext.Provider value={{ openName, handleOpen }}>
+    <DropdownContext.Provider value={{ openName, handleOpen, close }}>
       {children}
     </DropdownContext.Provider>
   );
@@ -39,10 +41,15 @@ function List({ opens: openToggleName, children }) {
 }
 
 function Item({ color, onClick, children }) {
+  const { close } = useContext(DropdownContext);
+
   return (
     <li
       className={`${color} cursor-pointer p-3 hover:bg-slate-600`}
-      onClick={onClick}
+      onClick={() => {
+        onClick();
+        close();
+      }}
     >
       {children}
     </li>

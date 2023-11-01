@@ -133,11 +133,20 @@ const boardSlice = createSlice({
       });
     },
     deleteBoard(state, action) {
-      state.boards = state.boards.filter(
-        (board) => board.id !== action.payload,
-      );
-      boardSlice.caseReducers.switchBoard();
+      if (action.payload === "1") {
+        console.warn("You can't delete the first board");
+      } else {
+        boardSlice.caseReducers.switchBoard(state, {
+          type: "switchBoard",
+          payload: "1",
+        });
+        state.boards = state.boards.filter(
+          (board) => board.id !== action.payload,
+        );
+      }
     },
+
+    editBoard(state, action) {},
     addColumn(state, action) {
       const board = state.boards.find((item) => item.isActive);
       board.columnNames.push(action.payload);

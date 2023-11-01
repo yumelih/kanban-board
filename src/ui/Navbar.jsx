@@ -7,6 +7,7 @@ import {
   openAddTaskModal,
 } from "../features/board/boardSlice";
 import Dropdown from "./Dropdown";
+import { useState } from "react";
 
 function Navbar({ onAddTask }) {
   const dispatch = useDispatch();
@@ -31,9 +32,9 @@ function Navbar({ onAddTask }) {
             color="text-red-500"
             onClick={() => dispatch(deleteBoard(boardId))}
           >
-            Delete
+            <span>Delete</span>
           </Dropdown.Item>
-          <Dropdown.Item>War</Dropdown.Item>
+          <Dropdown.Item>Edit</Dropdown.Item>
         </Dropdown.List>
       </Dropdown>
     </div>
