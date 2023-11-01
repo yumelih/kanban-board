@@ -1,4 +1,11 @@
-import { cloneElement, createContext, useContext, useState } from "react";
+import {
+  cloneElement,
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 const DropdownContext = createContext();
 
@@ -29,12 +36,31 @@ function Toggle({ opens: opensWindowName, children }) {
 }
 
 function List({ opens: openToggleName, children }) {
-  const { openName } = useContext(DropdownContext);
+  const ref = useRef(null);
+  const { openName, close } = useContext(DropdownContext);
+
+  useEffect(
+    function () {
+      function handleClick(e) {
+        if (ref.current && !ref.current.contains(e.target)) {
+          close();
+        }
+      }
+
+      document.addEventListener("click", handleClick, true);
+
+      return () => document.removeEventListener("click", handleClick, true);
+    },
+    [close],
+  );
 
   if (openName !== openToggleName) return null;
 
   return (
-    <ul className="absolute right-9 top-16 h-auto w-32 animate-fade-up list-none divide-y-2 divide-gray-500 bg-slate-700 font-semibold animate-once">
+    <ul
+      className="absolute right-9 top-16 h-auto w-32 animate-fade-up list-none divide-y-2 divide-gray-500 bg-slate-700 font-semibold animate-once"
+      ref={ref}
+    >
       {children}
     </ul>
   );
