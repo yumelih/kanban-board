@@ -11,7 +11,7 @@ import { addTask, getBoard } from "./boardSlice";
 import randomIdGenerator from "../../utils/randomIdGenerator";
 import { openAddTaskModal } from "./boardSlice";
 
-function AddTaskModal() {
+function EditTaskModal() {
   const [subtasks, setSubtasks] = useState([]);
   const {
     register,
@@ -67,8 +67,8 @@ function AddTaskModal() {
   }
 
   return (
-    <Modal type="addTask">
-      <h1 className="mb-4 text-xl font-semibold">Add New Task</h1>
+    <Modal type="editTask">
+      <h1 className="mb-4 text-xl font-semibold">Edit Task</h1>
       <form
         className="flex flex-col gap-4"
         onSubmit={handleSubmit(onTaskSubmit, onError)}
@@ -120,4 +120,4 @@ function AddTaskModal() {
   );
 }
 
-export default AddTaskModal;
+export default EditTaskModal;

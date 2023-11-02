@@ -6,6 +6,7 @@ const initialState = {
   isDetailTaskOpen: { open: null, func: "openAddTaskDetailModal" },
   isAddNewColumnOpen: false,
   isEditBoard: null,
+  isEditTask: null,
   boards: [
     {
       id: "1",
@@ -161,6 +162,12 @@ const boardSlice = createSlice({
       const board = state.boards.find((item) => item.isActive);
       board.todos.push(action.payload);
     },
+    deleteTask(state, action) {
+      const board = state.boards.find((item) => item.isActive);
+      board.todos = board.todos.filter(
+        (todo) => todo.taskId !== action.payload,
+      );
+    },
     switchBoard(state, action) {
       const board = state.boards.find((b) => b.id === action.payload);
       state.boards.forEach((board) => (board.isActive = false));
@@ -220,6 +227,9 @@ const boardSlice = createSlice({
     openEditBoardModal(state, action) {
       state.isEditBoard = action.payload;
     },
+    openEditTaskModal(state, action) {
+      state.isEditTask = action.payload;
+    },
   },
 });
 
@@ -239,8 +249,10 @@ export const {
   addBoard,
   switchBoard,
   addTask,
+  deleteTask,
   openAddTaskModal,
   openTaskDetailModal,
+  openEditTaskModal,
   updateSubtask,
   addColumn,
   openAddColumnModal,

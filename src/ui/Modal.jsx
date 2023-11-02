@@ -5,6 +5,7 @@ import {
   openAddTaskModal,
   openEditBoardModal,
   openTaskDetailModal,
+  openEditTaskModal,
 } from "../features/board/boardSlice";
 
 function Modal({ type, children }) {
@@ -21,6 +22,8 @@ function Modal({ type, children }) {
     if (type === "addColumn") dispatch(openAddColumnModal(isOpen.current));
 
     if (type === "editBoard") dispatch(openEditBoardModal(null));
+
+    if (type === "editTask") dispatch(openEditTaskModal(null));
   }
 
   return (
