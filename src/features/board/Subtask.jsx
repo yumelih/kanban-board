@@ -5,6 +5,7 @@ function Subtask({
   register,
   errors,
   validationSchema,
+  defaultValue = "",
 }) {
   return (
     <div className="flex flex-wrap items-center justify-center gap-1">
@@ -14,6 +15,7 @@ function Subtask({
         name={id}
         placeholder={placeholder}
         className="input grow"
+        defaultValue={defaultValue}
         {...register(id, validationSchema)}
       />
 

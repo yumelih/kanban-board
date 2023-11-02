@@ -37,6 +37,7 @@ function Input({
           placeholder="e.g. It's always good to take a break. The 15 minutes will recharge your batteries a little."
           className="input"
           rows="4"
+          defaultValue={defaultValue}
           {...register(id, validationSchema)}
         />
       )}

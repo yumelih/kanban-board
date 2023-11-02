@@ -21,8 +21,16 @@ const initialState = {
           taskDescription: "Something Good",
           currentColumn: "Todo",
           subtasks: [
-            { subtaskId: 1, subtaskTitle: "Be a winner", finished: true },
-            { subtaskId: 2, subtaskTitle: "Be a loser", finished: true },
+            {
+              subtaskId: "subtask-1",
+              subtaskTitle: "Be a winner",
+              finished: true,
+            },
+            {
+              subtaskId: "subtask-2",
+              subtaskTitle: "Be a loser",
+              finished: true,
+            },
           ],
         },
         {
@@ -31,8 +39,16 @@ const initialState = {
           taskDescription: "Something Good",
           currentColumn: "Done",
           subtasks: [
-            { subtaskId: 1, subtaskTitle: "Be a crybaby", finished: true },
-            { subtaskId: 2, subtaskTitle: "Be a loser", finished: false },
+            {
+              subtaskId: "subtask-1",
+              subtaskTitle: "Be a winner",
+              finished: true,
+            },
+            {
+              subtaskId: "subtask-2",
+              subtaskTitle: "Be a loser",
+              finished: true,
+            },
           ],
         },
         {
@@ -41,8 +57,16 @@ const initialState = {
           taskDescription: "Something Good",
           currentColumn: "Done",
           subtasks: [
-            { subtaskId: 1, subtaskTitle: "Be a winner", finished: true },
-            { subtaskId: 2, subtaskTitle: "Be a man", finished: false },
+            {
+              subtaskId: "subtask-1",
+              subtaskTitle: "Be a winner",
+              finished: true,
+            },
+            {
+              subtaskId: "subtask-2",
+              subtaskTitle: "Be a loser",
+              finished: true,
+            },
           ],
         },
         {
@@ -51,8 +75,16 @@ const initialState = {
           taskDescription: "Something Good",
           currentColumn: "Done",
           subtasks: [
-            { subtaskId: 1, subtaskTitle: "Be a winner", finished: true },
-            { subtaskId: 2, subtaskTitle: "Be a loser", finished: false },
+            {
+              subtaskId: "subtask-1",
+              subtaskTitle: "Be a winner",
+              finished: true,
+            },
+            {
+              subtaskId: "subtask-2",
+              subtaskTitle: "Be a loser",
+              finished: true,
+            },
           ],
         },
       ],
@@ -70,8 +102,16 @@ const initialState = {
           taskDescription: "Something Good",
           currentColumn: "Todo",
           subtasks: [
-            { subtaskId: 1, subTaskTitle: "Be a winner", finished: true },
-            { subtaskId: 2, subTaskTitle: "Be a loser", finished: true },
+            {
+              subtaskId: "subtask-1",
+              subtaskTitle: "Be a winner",
+              finished: true,
+            },
+            {
+              subtaskId: "subtask-2",
+              subtaskTitle: "Be a loser",
+              finished: true,
+            },
           ],
         },
         {
@@ -80,8 +120,16 @@ const initialState = {
           taskDescription: "Something Good",
           currentColumn: "Todo",
           subtasks: [
-            { subtaskId: 1, subTaskTitle: "Be a winner", finished: true },
-            { subtaskId: 2, subTaskTitle: "Be a loser", finished: false },
+            {
+              subtaskId: "subtask-1",
+              subtaskTitle: "Be a winner",
+              finished: true,
+            },
+            {
+              subtaskId: "subtask-2",
+              subtaskTitle: "Be a loser",
+              finished: true,
+            },
           ],
         },
         {
@@ -90,8 +138,16 @@ const initialState = {
           taskDescription: "Something Good",
           currentColumn: "Done",
           subtasks: [
-            { subtaskId: 1, subtaskTitle: "Be a winner", finished: true },
-            { subtaskId: 2, subtaskTitle: "Be a loser", finished: false },
+            {
+              subtaskId: "subtask-1",
+              subtaskTitle: "Be a winner",
+              finished: true,
+            },
+            {
+              subtaskId: "subtask-2",
+              subtaskTitle: "Be a loser",
+              finished: true,
+            },
           ],
         },
         {
@@ -100,8 +156,16 @@ const initialState = {
           taskDescription: "Something Good",
           currentColumn: "Done",
           subtasks: [
-            { subtaskId: 1, subtaskTitle: "Be a winner", finished: true },
-            { subtaskId: 2, subtaskTitle: "Be a loser", finished: false },
+            {
+              subtaskId: "subtask-1",
+              subtaskTitle: "Be a winner",
+              finished: true,
+            },
+            {
+              subtaskId: "subtask-2",
+              subtaskTitle: "Be a loser",
+              finished: true,
+            },
           ],
         },
       ],
@@ -127,8 +191,16 @@ const boardSlice = createSlice({
             taskDescription: "Something Good",
             currentColumn: "Todo",
             subtasks: [
-              { subtaskId: 1, subtaskTitle: "Be a winner", finished: true },
-              { subtaskId: 2, subtaskTitle: "Be a loser", finished: true },
+              {
+                subtaskId: "subtask-1",
+                subtaskTitle: "Be a winner",
+                finished: true,
+              },
+              {
+                subtaskId: "subtask-2",
+                subtaskTitle: "Be a loser",
+                finished: true,
+              },
             ],
           },
         ],
@@ -162,6 +234,21 @@ const boardSlice = createSlice({
       const board = state.boards.find((item) => item.isActive);
       board.todos.push(action.payload);
     },
+    editTask: {
+      prepare(taskId, taskData) {
+        return {
+          payload: { taskId, taskData },
+        };
+      },
+      reducer(state, action) {
+        const board = state.boards.find((item) => item.isActive);
+        let taskIndex = board.todos.findIndex(
+          (todo) => todo.taskId === action.payload.taskId,
+        );
+        board.todos[taskIndex] = action.payload.taskData;
+      },
+    },
+
     deleteTask(state, action) {
       const board = state.boards.find((item) => item.isActive);
       board.todos = board.todos.filter(
@@ -244,12 +331,17 @@ export const getTaskDetail = (state) =>
 export const getAddTaskOpen = (state) => state.boards.isAddTaskModalOpen;
 export const getDetailTaskOpen = (state) => state.boards.isDetailTaskOpen;
 export const getAddColumnOpen = (state) => state.boards.isAddNewColumnOpen;
+export const getEditTask = (state) =>
+  getBoard(state).todos?.find(
+    (todo) => todo.taskId === state.boards.isEditTask,
+  );
 
 export const {
   addBoard,
   switchBoard,
   addTask,
   deleteTask,
+  editTask,
   openAddTaskModal,
   openTaskDetailModal,
   openEditTaskModal,

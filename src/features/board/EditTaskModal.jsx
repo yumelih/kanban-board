@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../ui/Button";
 
 import Input from "../../ui/Input";
@@ -7,18 +7,22 @@ import Select from "../../ui/Select";
 import Subtask from "./Subtask";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { addTask, getBoard } from "./boardSlice";
+import {
+  editTask,
+  getBoard,
+  getEditTask,
+  openEditTaskModal,
+} from "./boardSlice";
 import randomIdGenerator from "../../utils/randomIdGenerator";
-import { openAddTaskModal } from "./boardSlice";
 
 function EditTaskModal() {
-  const [subtasks, setSubtasks] = useState([]);
+  const [subtasksState, setSubtasksState] = useState([]);
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm();
+  const currentTask = useSelector(getEditTask);
   const { columnNames } = useSelector(getBoard);
   const dispatch = useDispatch();
 
@@ -26,14 +30,14 @@ function EditTaskModal() {
     e.preventDefault();
     const randomId = randomIdGenerator();
     const SubtaskComponent = {
-      id: `subtask-${randomId}`,
+      subtaskId: `subtask-${randomId}`,
     };
-    setSubtasks((s) => [...s, SubtaskComponent]);
+    setSubtasksState((s) => [...s, SubtaskComponent]);
   }
 
   function deleteSubtask(e, id) {
     e.preventDefault();
-    setSubtasks((prev) => prev.filter((subt) => subt.id !== id));
+    setSubtasksState((prev) => prev.filter((subt) => subt.subtaskId !== id));
   }
 
   function onTaskSubmit(data) {
@@ -41,30 +45,57 @@ function EditTaskModal() {
 
     for (const [key, value] of Object.entries(data)) {
       if (key.includes("subtask")) {
-        const subtask = {
-          subtaskId: key,
-          subtaskTitle: value,
-          finished: false,
-        };
+        const existingSubTask = subtasksState.find(
+          (sub) => sub.subtaskId === key,
+        );
+
+        const subtask = existingSubTask
+          ? {
+              subtaskId: key,
+              subtaskTitle: value,
+              finished: existingSubTask.finished,
+            }
+          : {
+              subtaskId: key,
+              subtaskTitle: value,
+              finished: false,
+            };
         subtasks.push(subtask);
       }
     }
 
     const taskData = {
-      taskId: randomIdGenerator(),
+      taskId: currentTask.taskId,
       taskTitle: data.taskTitle,
       taskDescription: data.taskDescription,
       currentColumn: data.currentColumn,
       subtasks,
     };
 
-    dispatch(addTask(taskData));
-    dispatch(openAddTaskModal(false));
+    console.log(taskData);
+
+    dispatch(editTask(currentTask?.taskId, taskData));
+    dispatch(openEditTaskModal(null));
   }
 
   function onError(err) {
     // console.log(err);
   }
+
+  useEffect(
+    function () {
+      const newSubtasks = currentTask?.subtasks?.map((sub) => {
+        return {
+          subtaskId: sub.subtaskId,
+          defaultValue: sub.subtaskTitle,
+          finished: sub.finished,
+        };
+      });
+
+      setSubtasksState(newSubtasks);
+    },
+    [currentTask?.subtasks],
+  );
 
   return (
     <Modal type="editTask">
@@ -78,11 +109,17 @@ function EditTaskModal() {
           register={register}
           errors={errors}
           validationSchema={{ required: "This field is required" }}
+          defaultValue={currentTask.taskTitle}
         >
           Title
         </Input>
 
-        <Input id="taskDescription" type="textarea" register={register}>
+        <Input
+          id="taskDescription"
+          type="textarea"
+          register={register}
+          defaultValue={currentTask.taskDescription}
+        >
           Description
         </Input>
 
@@ -90,16 +127,17 @@ function EditTaskModal() {
           <h3 className="label">Subtasks</h3>
           {/* <Subtask id="subtask1" placeholder="e.g. Make coffee" />
           <Subtask id="subtask2" placeholder="e.g. Drink coffee and smile" /> */}
-          {subtasks.map((s, i) => {
+          {subtasksState.map((s, i) => {
             return (
               <Subtask
-                key={s.id}
-                id={s.id}
+                key={s.subtaskId}
+                id={s.subtaskId}
                 placeholder={`subtask-${i}`}
                 onSubtaskDelete={deleteSubtask}
                 register={register}
                 validationSchema={{ required: "This field is required" }}
                 errors={errors}
+                defaultValue={s?.defaultValue}
               />
             );
           })}
@@ -114,7 +152,7 @@ function EditTaskModal() {
           options={columnNames}
           register={register}
         />
-        <Button>Create Task</Button>
+        <Button>Edit Task</Button>
       </form>
     </Modal>
   );
