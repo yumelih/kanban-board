@@ -35,7 +35,7 @@ function AppLayout() {
       {isEditTask && <EditTaskModal />}
       {isAddColumnOpen && <AddColumn />}
       {isEditBoard && <EditBoardModal boardName={boardName} />}
-      <div className=" relative grid h-full w-full grid-cols-[minmax(18rem,max-content)_1fr] grid-rows-[minmax(5rem,max-content)_1fr] gap-x-[0.5px]  bg-primary ">
+      <div className=" relative grid h-full w-full grid-cols-[minmax(6rem,max-content)_1fr] grid-rows-[minmax(5rem,max-content)_1fr] gap-x-[0.5px] bg-primary md:grid-cols-[minmax(18rem,max-content)_1fr] ">
         <Sidebar />
         <Navbar />
         <Board />

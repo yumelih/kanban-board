@@ -49,17 +49,13 @@ function EditTaskModal() {
           (sub) => sub.subtaskId === key,
         );
 
-        const subtask = existingSubTask
-          ? {
-              subtaskId: key,
-              subtaskTitle: value,
-              finished: existingSubTask.finished,
-            }
-          : {
-              subtaskId: key,
-              subtaskTitle: value,
-              finished: false,
-            };
+        const subtask = {
+          subtaskId: key,
+          subtaskTitle: value,
+          finished: existingSubTask.finished ? existingSubTask.finished : false,
+        };
+
+        console.log(subtasksState, subtasks);
         subtasks.push(subtask);
       }
     }
