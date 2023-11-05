@@ -4,6 +4,10 @@ Kanban board to list your todos and switch between several boards while having a
 
 ## Overview
 
+### Screnshoots
+
+![Desktop Site](./public/kanban.png "Desktop Site")
+
 ### Link
 
 - Live Site Url: [Live Site](https://kanban-board-sepia-theta.vercel.app/)
