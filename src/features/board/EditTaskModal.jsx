@@ -115,6 +115,7 @@ function EditTaskModal() {
           type="textarea"
           register={register}
           defaultValue={currentTask.taskDescription}
+          validationSchema={{}}
         >
           Description
         </Input>

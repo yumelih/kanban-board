@@ -82,7 +82,12 @@ function AddTaskModal() {
           Title
         </Input>
 
-        <Input id="taskDescription" type="textarea" register={register}>
+        <Input
+          id="taskDescription"
+          type="textarea"
+          register={register}
+          validationSchema={{}}
+        >
           Description
         </Input>
 
