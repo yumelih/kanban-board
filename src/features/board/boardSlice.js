@@ -255,6 +255,22 @@ const boardSlice = createSlice({
         (todo) => todo.taskId !== action.payload,
       );
     },
+    dragTask: {
+      prepare(taskId, columnName) {
+        return {
+          payload: {
+            taskId,
+            columnName,
+          },
+        };
+      },
+      reducer(state, action) {
+        const todo = state.boards
+          .find((board) => board.isActive)
+          .todos.find((task) => task.taskId === action.payload.taskId);
+        todo.currentColumn = action.payload.columnName;
+      },
+    },
     switchBoard(state, action) {
       const board = state.boards.find((b) => b.id === action.payload);
       state.boards.forEach((board) => (board.isActive = false));
@@ -342,6 +358,7 @@ export const {
   addTask,
   deleteTask,
   editTask,
+  dragTask,
   openAddTaskModal,
   openTaskDetailModal,
   openEditTaskModal,

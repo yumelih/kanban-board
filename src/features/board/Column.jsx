@@ -1,11 +1,14 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Heading from "../../ui/Heading";
 import Task from "./Task";
-import { getBoard } from "./boardSlice";
+import { dragTask, getBoard } from "./boardSlice";
 
 function Column({ index, onShowDetails }) {
   // const tasks = useSelector(getAllTasks);
+
   const board = useSelector(getBoard);
+  const columnName = board.columnNames[index];
+  const dispatch = useDispatch();
   const tasks = board.todos;
   const colors = [
     "bg-red-300",
@@ -16,29 +19,46 @@ function Column({ index, onShowDetails }) {
     "bg-purple-300",
   ];
   const currentColumnTasks = tasks.reduce(
-    (acc, cur) =>
-      acc + (cur.currentColumn === board.columnNames[index] ? 1 : 0),
+    (acc, cur) => acc + (cur.currentColumn === columnName ? 1 : 0),
     0,
   );
 
+  function handleDragStart(e, id) {
+    e.dataTransfer.setData("taskId", id);
+  }
+
+  function handleDrop(e) {
+    const taskId = e.dataTransfer.getData("taskId");
+    dispatch(dragTask(taskId, columnName));
+  }
+
+  function handleDragOver(e) {
+    e.preventDefault();
+  }
+
   return (
-    <div className="grid auto-cols-[20rem] content-start gap-6">
+    <div
+      className="grid auto-cols-[20rem] content-start gap-6"
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
+    >
       <Heading type="column">
         <span
           className={`${colors[index]} mr-3 inline-block h-4 w-4 rounded-full`}
         ></span>
-        <span>{board.columnNames[index]}&nbsp;</span>
+        <span>{columnName}&nbsp;</span>
         <span className="text-[12px]">({currentColumnTasks})</span>
       </Heading>
       {tasks.map(
         (task) =>
-          board.columnNames[index] === task.currentColumn && (
+          columnName === task.currentColumn && (
             <Task
               key={task.taskId}
               id={task.taskId}
               title={task.taskTitle}
               subtasks={task.subtasks}
               onShowDetails={onShowDetails}
+              handleDragStart={handleDragStart}
             />
           ),
       )}

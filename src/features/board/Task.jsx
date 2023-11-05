@@ -7,7 +7,7 @@ import trashIcon from "../../assets/trash-icon.png";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 
-function Task({ id, title, subtasks }) {
+function Task({ id, title, subtasks, handleDragStart }) {
   const [isTaskHovered, setIsTaskHovered] = useState(false);
   const dispatch = useDispatch();
 
@@ -27,6 +27,8 @@ function Task({ id, title, subtasks }) {
       onMouseEnter={() => setIsTaskHovered(true)}
       onMouseLeave={() => setIsTaskHovered(false)}
       onClick={() => dispatch(openTaskDetailModal(id))}
+      draggable
+      onDragStart={(e) => handleDragStart(e, id)}
     >
       <div>
         <Heading type="task">{title}</Heading>
