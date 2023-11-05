@@ -147,6 +147,7 @@ function EditTaskModal() {
           label="Column"
           options={columnNames}
           register={register}
+          defaultValue={currentTask.currentColumn}
         />
         <Button>Edit Task</Button>
       </form>
